@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/usr/bin/env python3
 
 import sys
 import os
@@ -12,7 +12,7 @@ import string
 import platform
 import re
 import time
-from urlparse import urlparse
+from urllib.parse import urlparse
 import subprocess
 from os import walk
 
@@ -93,7 +93,7 @@ def RunGetOutput(cmd, no_output, chk_err=False):
     try:
         output = subprocess.check_output(
             no_output, cmd, stderr=subprocess.STDOUT, shell=True)
-    except subprocess.CalledProcessError, e:
+    except subprocess.CalledProcessError as e:
         if no_output:
             return e.returncode, None
         else:
@@ -312,16 +312,10 @@ def check_access_to_linux_repos():
 
 def main(output_path=None, return_json_output="False"):
     if os.geteuid() != 0:
-        print "Please run this script as root"
+        print("Please run this script as root")
         exit()
 
-    # supported python version 2.4.x to 2.7.x
-    if not ((sys.version_info[0] == 2) and ((sys.version_info[1]>=4) and (sys.version_info[1] < 8))):
-        print("Unsupport python version:" + str(sys.version_info))
-        exit()
-
-
-    print "Processing Information...[can take upto 5 minutes]"
+    print("Processing Information...[can take upto 5 minutes]")
     global workspace
     workspace = get_workspace()
 
@@ -345,10 +339,10 @@ def main(output_path=None, return_json_output="False"):
         pass
 
     if return_json_output == "True":
-        print json.dumps([obj.__dict__ for obj in rule_info_list])
+        print(json.dumps([obj.__dict__ for obj in rule_info_list]))
     else:
         for line in output:
-            print line
+            print(line)
 
         if output_path is not None:
             try:
@@ -360,7 +354,7 @@ def main(output_path=None, return_json_output="False"):
             f = open(log_path, "w")
             f.write("".join(output))
             f.close()
-            print "Output is written to " + log_path
+            print("Output is written to " + log_path)
 
 def get_machine_info():
     FNULL = open(os.devnull, "w")
